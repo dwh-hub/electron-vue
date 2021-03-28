@@ -5,9 +5,11 @@ export default function(mainWindow) {
     mainWindow.minimize();
   });
 
-  ipcMain.on("window-max", () => {
-    if (mainWindow.isMaximized()) {
-      mainWindow.unmaximize();
+  ipcMain.on("window-max", (event, isMax) => {
+    if (isMax) {
+      // resizable为false后需手动设置最大化还原
+      mainWindow.setContentSize(1200, 800);
+      mainWindow.center();
     } else {
       mainWindow.maximize();
     }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="window-header">
     <controls></controls>
   </div>
 </template>
@@ -14,4 +14,7 @@ export default {
 </script>
 
 <style>
+.window-header {
+  -webkit-app-region: drag;
+}
 </style>

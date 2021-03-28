@@ -14,11 +14,11 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    width: 1200,
     height: 800,
     useContentSize: true,
-    width: 1200,
     frame: false,
-    resizable: false,
+    resizable: false, //禁止改变主窗口尺寸,设置为false时，win.isMaximized()总是返回false，最大化无法还原
     skipTaskbar: false,
     transparent: false,
     title:"大花园",

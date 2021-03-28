@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="controls-item" @click="setFrame('min')">最小化</div>
-    <div class="controls-item" @click="setFrame('plus')">全屏</div>
+    <div class="controls-item" @click="setFrame('unmax')" v-if="isMax">缩小</div>
+    <div class="controls-item" @click="setFrame('max')" v-else>全屏</div>
     <div class="controls-item" @click="setFrame('close')">关闭</div>
   </div>
 </template>
@@ -9,11 +10,11 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      isMax: false
+    };
   },
   created() {
-    this.currentWindow = this.$electron.remote.getCurrentWindow();
-    this.isMax = this.currentWindow.isMaximized();
   },
   methods: {
     setFrame(action) {
@@ -21,20 +22,18 @@ export default {
         case "min":
           this.$electron.ipcRenderer.send("window-min");
           break;
-        case "plus":
-          this.$electron.ipcRenderer.send("window-max");
+        case "max":
+          this.$electron.ipcRenderer.send("window-max", this.isMax);
+          this.isMax = true
+          break;
+        case "unmax":
+          this.$electron.ipcRenderer.send("window-max", this.isMax);
+          this.isMax = false
           break;
         case "close":
           this.$electron.ipcRenderer.send("window-close");
           break;
-        case "mini":
-          this.$electron.ipcRenderer.send("toggle-mini", {
-            value: true,
-            storeState: this.$store.state,
-          });
-          break;
       }
-      this.isMax = this.currentWindow.isMaximized();
     },
   },
 };
@@ -45,5 +44,6 @@ export default {
   cursor: pointer;
   display: inline-block;
   margin: 0 5px;
+  -webkit-app-region: no-drag;
 }
 </style>
